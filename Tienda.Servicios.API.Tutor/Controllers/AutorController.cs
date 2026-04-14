@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using TiendaServicios.API.Autor.Aplicación;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TiendaServicios.API.Autor.Modelo;
+using TiendaServicios.Api.Autor.Aplicacion;
+using TiendaServicios.Api.Autor.Modelo;
 
 
 
-namespace TiendaServicios.API.Autor.Controllers
+namespace TiendaServicios.Api.Autor.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

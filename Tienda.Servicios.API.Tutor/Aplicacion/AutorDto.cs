@@ -4,7 +4,7 @@ using System.Linq;
 
 
 
-namespace TiendaServicios.API.Autor.Aplicación
+namespace TiendaServicios.Api.Autor.Aplicacion
 {
     public class AutorDto
     {

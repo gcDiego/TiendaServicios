@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using TiendaServicios.API.Autor.Modelo;
 using TiendaServicios.Api.Autor.Persistencia;
 using FluentValidation;
+using TiendaServicios.Api.Autor.Modelo;
 
 
-namespace TiendaServicios.API.Autor.Aplicación
+namespace TiendaServicios.Api.Autor.Aplicacion
 {
     public class Nuevo
     {

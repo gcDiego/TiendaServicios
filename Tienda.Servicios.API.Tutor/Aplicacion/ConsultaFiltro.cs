@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using TiendaServicios.API.Autor.Modelo;
 using TiendaServicios.Api.Autor.Persistencia;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;//no estaba en la clase original
+using Microsoft.EntityFrameworkCore;
+using TiendaServicios.Api.Autor.Modelo; //no estaba en la clase original
 
-namespace TiendaServicios.API.Autor.Aplicación
+namespace TiendaServicios.Api.Autor.Aplicacion
 {
     public class ConsultaFiltro
     {

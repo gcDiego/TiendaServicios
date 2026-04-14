@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace TiendaServicios.API.Autor.Modelo
+namespace TiendaServicios.Api.Autor.Modelo
 {
     public class GradoAcademico
     {

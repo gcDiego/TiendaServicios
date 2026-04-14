@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TiendaServicios.API.Autor.Modelo;
+using TiendaServicios.Api.Autor.Modelo;
 
 namespace TiendaServicios.Api.Autor.Persistencia
 {

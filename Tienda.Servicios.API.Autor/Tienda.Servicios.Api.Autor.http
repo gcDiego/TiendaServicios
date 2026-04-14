@@ -1,0 +1,10 @@
+@HostAddress = http://localhost:5248
+
+POST {{HostAddress}}/api/autor
+Content-Type: application/json
+
+{
+  "nombre": "Gabriel",
+  "apellido": "Garcia Marquez",
+  "fechaNacimiento": "1927-03-06T00:00:00Z"
+}

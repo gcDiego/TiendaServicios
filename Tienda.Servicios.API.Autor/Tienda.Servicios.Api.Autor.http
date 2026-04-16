@@ -8,3 +8,15 @@ Content-Type: application/json
   "apellido": "Garcia Marquez",
   "fechaNacimiento": "1927-03-06T00:00:00Z"
 }
+
+
+### Obtener todos los autores
+GET {{HostAddress}}/api/autor
+Accept: application/json
+
+###
+
+
+@autorId = 913a0509-019b-41de-805d-aa414d10a3f3
+GET {{HostAddress}}/api/autor/{{autorId}}
+Accept: application/json

@@ -4,8 +4,8 @@ POST {{HostAddress}}/api/autor
 Content-Type: application/json
 
 {
-  "nombre": "Gabriel",
-  "apellido": "Garcia Marquez",
+  "nombre": "Willian",
+  "apellido": "Shakespeare",
   "fechaNacimiento": "1927-03-06T00:00:00Z"
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -30,17 +31,19 @@ namespace TiendaServicios.Api.Libro
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+            services.AddControllers();
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            services.AddValidatorsFromAssemblyContaining<Nuevo>();
 
             services.AddDbContext<ContextoLibreria>(opt =>
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("ConexionDB"));
             });
 
-            services.AddMediatR(typeof(Nuevo.Manejador).Assembly);
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Nuevo.Manejador).Assembly));
 
-            services.AddAutoMapper(typeof(Consulta.Ejecuta));
-
+            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Consulta.Ejecuta).Assembly));
 
         }
 

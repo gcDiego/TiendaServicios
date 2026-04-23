@@ -12,7 +12,7 @@ namespace TiendaServicios.Api.Libro.Aplicacion
 {
     public class Nuevo
     {
-        public class Ejecuta : IRequest { 
+        public class Ejecuta : IRequest<Unit> { 
             public  string Titulo { get; set; }
             public  DateTime? FechaPublicacion { get; set; }
             public  Guid? AutorLibro { get; set; }
@@ -29,7 +29,7 @@ namespace TiendaServicios.Api.Libro.Aplicacion
         }
 
 
-        public class Manejador : IRequestHandler<Ejecuta>
+        public class Manejador : IRequestHandler<Ejecuta, Unit>
         {
             private readonly ContextoLibreria _contexto;
 

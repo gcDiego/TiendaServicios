@@ -1,0 +1,22 @@
+@HostAddress = http://localhost:5249
+
+### Crear nuevo libro material
+POST {{HostAddress}}/api/LibroMaterial
+Content-Type: application/json
+
+{
+  "Titulo": "El Castillo",
+  "FechaPublicacion": "1926-01-01T00:00:00Z",
+  "AutorLibro": "913a0509-019b-41de-805d-aa414d10a3f3"
+}
+
+
+### Obtener todos los libros
+GET {{HostAddress}}/api/LibroMaterial
+Accept: application/json
+
+
+### Obtener un libro especifico por ID
+@libroId = ACA_VA_EL_GUID_DEL_LIBRO_CREADO
+GET {{HostAddress}}/api/LibroMaterial/{{libroId}}
+Accept: application/json

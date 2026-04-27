@@ -9,7 +9,7 @@ using TiendaServicios.Api.Libro.Aplicacion;
 
 namespace TiendaServicios.Api.Libro.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/LibroMaterial")]
     [ApiController]
     public class LibroMaterialController : ControllerBase
     {

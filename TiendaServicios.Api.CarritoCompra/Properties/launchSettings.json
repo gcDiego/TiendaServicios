@@ -5,8 +5,8 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "launchUrl": "api/LibroMaterial",
-      "applicationUrl": "http://localhost:5249",
+      "launchUrl": "api/CarritoCompras",
+      "applicationUrl": "http://localhost:5250",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -15,8 +15,8 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "launchUrl": "api/LibroMaterial",
-      "applicationUrl": "https://localhost:7039;http://localhost:5249",
+      "launchUrl": "api/CarritoCompras",
+      "applicationUrl": "https://localhost:7040;http://localhost:5250",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

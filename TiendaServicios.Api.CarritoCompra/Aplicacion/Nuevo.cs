@@ -11,14 +11,14 @@ namespace TiendaServicios.Api.CarritoCompra.Aplicacion
 {
     public class Nuevo
     {
-        public class Ejecuta : IRequest { 
+        public class Ejecuta : IRequest<Unit> { 
             public DateTime FechaCreacionSesion { get; set; }
 
             public List<string> ProductoLista { get; set; }
 
         }
 
-        public class Manejador : IRequestHandler<Ejecuta>
+        public class Manejador : IRequestHandler<Ejecuta, Unit>
         {
             private readonly CarritoContexto _contexto;
             public Manejador(CarritoContexto contexto) {

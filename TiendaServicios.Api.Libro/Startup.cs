@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,10 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TiendaServicios.Api.Libro.Aplicacion;
-using TiendaServicios.Api.Libro.Persistencia;
+using TiendaServicios.Api.CarritoCompra.Aplicacion;
+using TiendaServicios.Api.CarritoCompra.Persistencia;
+using TiendaServicios.Api.CarritoCompra.RemoteInterface;
+using TiendaServicios.Api.CarritoCompra.RemoteService;
 
-namespace TiendaServicios.Api.Libro
+namespace TiendaServicios.Api.CarritoCompra
 {
     public class Startup
     {
@@ -31,19 +30,17 @@ namespace TiendaServicios.Api.Libro
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ILibrosService, LibrosService>();
             services.AddControllers();
-            services.AddFluentValidationAutoValidation();
-            services.AddFluentValidationClientsideAdapters();
-            services.AddValidatorsFromAssemblyContaining<Nuevo>();
-
-            services.AddDbContext<ContextoLibreria>(opt =>
+            services.AddDbContext<CarritoContexto>(options =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("ConexionDB"));
+                options.UseMySQL(Configuration.GetConnectionString("ConexionDatabase"));
             });
-
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Nuevo.Manejador).Assembly));
-
-            services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Consulta.Ejecuta).Assembly));
+            services.AddMediatR(typeof(Nuevo.Manejador).Assembly);
+            services.AddHttpClient("Libros", config =>
+            {
+                config.BaseAddress = new Uri(Configuration["Services:Libros"]);
+            });
 
         }
 

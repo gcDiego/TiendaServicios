@@ -19,7 +19,8 @@ namespace TiendaServicios.Api.CarritoCompra.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data) {
+        public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data)
+        {
             return await _mediator.Send(data);
         }
 

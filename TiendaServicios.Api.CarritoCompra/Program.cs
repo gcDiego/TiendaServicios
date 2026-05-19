@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace TiendaServicios.Api.Libro
+namespace TiendaServicios.Api.CarritoCompra
 {
     public class Program
     {

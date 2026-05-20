@@ -17,6 +17,6 @@ Accept: application/json
 
 
 ### Obtener un libro especifico por ID
-@libroId = ACA_VA_EL_GUID_DEL_LIBRO_CREADO
+@libroId = 0e892894-1e34-4a37-5c03-08deb52b688f
 GET {{HostAddress}}/api/LibroMaterial/{{libroId}}
 Accept: application/json

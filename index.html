@@ -1,30 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Shopping Cart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shopping Cart</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .cart-container {
+            margin-top: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        .cart-header {
+            background: linear-gradient(90deg, rgba(52,58,64,1) 0%, rgba(82,88,94,1) 100%);
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
+        }
+        .cart-header h1 {
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+        .table thead th {
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.02);
+            transition: all 0.2s ease-in-out;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+        .table tfoot strong {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .product-icon, .price-icon {
+            margin-right: 8px;
+        }
+        .text-danger {
+            text-align: center;
+            padding: 2rem;
+        }
+    </style>
 </head>
 <body>
+
 <div class="container">
-    <h1 class="mt-5">Shopping Cart</h1>
-    <table class="table table-striped mt-3">
-        <thead>
-        <tr>
-            <th>Product</th>
-            <th>Details</th>
-            <th>Unit Price</th>
-        </tr>
-        </thead>
-        <tbody id="cart-table-body">
-        </tbody>
-        <tfoot id="cart-table-foot">
-        </tfoot>
-    </table>
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Carrito de compra</h1>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><span class="product-icon"></span>Producto</th>
+                        <th>Detalles</th>
+                        <th><span class="price-icon"></span>Precio Unitario</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-table-body">
+                    <!-- Cart items will be injected here -->
+                </tbody>
+                <tfoot id="cart-table-foot">
+                    <!-- Total will be injected here -->
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        //Id de carrito correspondiente desde la base de datos
         const carritoSesionId = 1;
 
         fetch(`http://localhost:5250/api/CarritoCompras/${carritoSesionId}`)
@@ -42,27 +104,25 @@
                 if (data.listaProductos && data.listaProductos.length > 0) {
                     data.listaProductos.forEach(producto => {
                         tableContent += `
-                                <tr>
-                                    <td>${producto.tituloLibro}</td>
-                                    <td>
-                                        <b>Author:</b> ${producto.autorLibro || 'N/A'}<br>
-                                        <b>Publication Date:</b> ${producto.fechaPublicacion ? new Date(producto.fechaPublicacion).toLocaleDateString() : 'N/A'}
-                                    </td>
-                                    <td>$${producto.precioUnitario.toFixed(2)}</td>
-                                </tr>
-                            `;
+                            <tr>
+                                <td><strong>${producto.tituloLibro}</strong></td>
+                                <td>
+                                    <b>Author:</b> ${producto.autorLibro || 'N/A'}<br>
+                                    <b>Published:</b> ${producto.fechaPublicacion ? new Date(producto.fechaPublicacion).toLocaleDateString() : 'N/A'}
+                                </td>
+                                <td>$${producto.precioUnitario.toFixed(2)}</td>
+                            </tr>
+                        `;
                     });
 
-                    // Add the total row to the footer
                     tableFoot.innerHTML = `
                         <tr>
                             <td colspan="2" class="text-right"><strong>Total:</strong></td>
                             <td><strong>$${data.total.toFixed(2)}</strong></td>
                         </tr>
                     `;
-
                 } else {
-                    tableContent = '<tr><td colspan="3" class="text-center">No products found in this cart.</td></tr>';
+                    tableContent = '<tr><td colspan="3" class="text-center py-5">Your cart is empty.</td></tr>';
                 }
 
                 tableBody.innerHTML = tableContent;
@@ -70,9 +130,10 @@
             .catch(error => {
                 console.error('Error fetching cart data:', error);
                 const tableBody = document.getElementById('cart-table-body');
-                tableBody.innerHTML = '<tr><td colspan="3" class="text-danger">Error loading cart data. Make sure all backend services are running and CORS is configured correctly. Check the console for details.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="3" class="text-danger">Could not load cart data. Please ensure all services are running.</td></tr>';
             });
     });
 </script>
+
 </body>
 </html>

@@ -4,84 +4,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Shopping Cart</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy:    #121669;
+            --violet:  #555fb2;
+            --lavender:#d5c6ed;
+            --white:   #ffffff;
+            --off-white: #f7f6fc;
+            --text-dark: #0d0f3f;
+            --text-mid: #3d3f6e;
+            --shadow: 0 8px 40px rgba(18,22,105,0.13);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 3rem 1rem 4rem;
+            position: relative;
+            overflow-x: hidden;
         }
-        .cart-container {
-            margin-top: 50px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            background: #ffffff;
+
+        /* Decorative background blobs */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
         }
+        body::before {
+            width: 480px; height: 480px;
+            background: var(--violet);
+            top: -120px; left: -120px;
+        }
+        body::after {
+            width: 400px; height: 400px;
+            background: var(--navy);
+            bottom: -100px; right: -100px;
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 820px;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── HEADER ── */
         .cart-header {
-            background: linear-gradient(90deg, rgba(52,58,64,1) 0%, rgba(82,88,94,1) 100%);
-            color: #fff;
-            padding: 2rem;
-            text-align: center;
+            background: var(--navy);
+            border-radius: 20px 20px 0 0;
+            padding: 2.4rem 2.8rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            position: relative;
+            overflow: hidden;
         }
-        .cart-header h1 {
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            margin: 0;
+        .cart-header::after {
+            content: '';
+            position: absolute;
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            background: var(--violet);
+            opacity: 0.18;
+            right: -80px; top: -120px;
         }
-        .table thead th {
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-            text-transform: uppercase;
+        .header-icon {
+            width: 52px; height: 52px;
+            background: var(--lavender);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .header-icon svg { width: 28px; height: 28px; color: var(--navy); }
+        .header-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--white);
+            letter-spacing: 0.4px;
+            line-height: 1.2;
+        }
+        .header-text p {
+            font-size: 0.82rem;
+            color: var(--lavender);
+            margin-top: 3px;
+            font-weight: 300;
             letter-spacing: 0.5px;
         }
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-            transform: scale(1.02);
-            transition: all 0.2s ease-in-out;
+
+        /* ── CARD ── */
+        .cart-card {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            overflow: hidden;
         }
-        .table td, .table th {
+
+        /* ── TABLE ── */
+        .table-wrap { overflow-x: auto; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background: var(--lavender);
+        }
+        thead th {
+            padding: 1rem 1.4rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--navy);
+            text-align: left;
+        }
+        tbody tr {
+            border-bottom: 1px solid #ede9f8;
+            transition: background 0.18s;
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #f3f0fb; }
+        tbody td {
+            padding: 1.15rem 1.4rem;
             vertical-align: middle;
-            padding: 1rem;
+            color: var(--text-dark);
+            font-size: 0.95rem;
         }
-        .table tfoot strong {
-            font-size: 1.2rem;
+
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
             font-weight: 600;
+            color: var(--navy);
+            line-height: 1.3;
         }
-        .product-icon, .price-icon {
-            margin-right: 8px;
+        .book-meta {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            margin-top: 4px;
+            line-height: 1.7;
         }
-        .text-danger {
+        .book-meta span { font-weight: 500; }
+
+        .price-chip {
+            display: inline-block;
+            background: var(--lavender);
+            color: var(--navy);
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+        }
+
+        /* ── FOOTER / TOTAL ── */
+        .cart-footer {
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.3rem 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+        .cart-footer .label {
+            font-size: 0.85rem;
+            color: var(--lavender);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .cart-footer .amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+        .checkout-btn {
+            background: var(--lavender);
+            color: var(--navy);
+            border: none;
+            border-radius: 12px;
+            padding: 0.65rem 1.6rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .checkout-btn:hover {
+            background: #c4b0e6;
+            transform: translateY(-1px);
+        }
+
+        /* ── EMPTY / ERROR STATE ── */
+        .state-msg {
+            padding: 4rem 2rem;
             text-align: center;
-            padding: 2rem;
+            color: var(--text-mid);
+            font-size: 0.95rem;
+        }
+        .state-msg svg {
+            display: block;
+            margin: 0 auto 1rem;
+            opacity: 0.3;
+            width: 48px; height: 48px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="cart-container">
-        <div class="cart-header">
-            <h1>Carrito de compra</h1>
+<div class="wrapper">
+    <div class="cart-header">
+        <div class="header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 01-8 0"/>
+            </svg>
         </div>
-        <div class="table-responsive">
-            <table class="table table-hover">
+        <div class="header-text">
+            <h1>Carrito de compras</h1>
+            <p>Review your items before proceeding</p>
+        </div>
+    </div>
+
+    <div class="cart-card">
+        <div class="table-wrap">
+            <table>
                 <thead>
                     <tr>
-                        <th><span class="product-icon"></span>Producto</th>
+                        <th>Producto</th>
                         <th>Detalles</th>
-                        <th><span class="price-icon"></span>Precio Unitario</th>
+                        <th>Precio Unitario</th>
                     </tr>
                 </thead>
                 <tbody id="cart-table-body">
-                    <!-- Cart items will be injected here -->
+                    <!-- Items injected here -->
                 </tbody>
-                <tfoot id="cart-table-foot">
-                    <!-- Total will be injected here -->
-                </tfoot>
             </table>
         </div>
+    </div>
+
+    <div class="cart-footer" id="cart-footer" style="display:none;">
+        <div>
+            <div class="label">Total Amount</div>
+            <div class="amount" id="total-amount">$0.00</div>
+        </div>
+        <button class="checkout-btn">Checkout &rarr;</button>
     </div>
 </div>
 
@@ -91,49 +273,56 @@
 
         fetch(`http://localhost:5250/api/CarritoCompras/${carritoSesionId}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return response.json();
             })
             .then(data => {
                 const tableBody = document.getElementById('cart-table-body');
-                const tableFoot = document.getElementById('cart-table-foot');
-                let tableContent = '';
+                const footer    = document.getElementById('cart-footer');
+                const totalEl   = document.getElementById('total-amount');
 
                 if (data.listaProductos && data.listaProductos.length > 0) {
-                    data.listaProductos.forEach(producto => {
-                        tableContent += `
-                            <tr>
-                                <td><strong>${producto.tituloLibro}</strong></td>
-                                <td>
-                                    <b>Author:</b> ${producto.autorLibro || 'N/A'}<br>
-                                    <b>Published:</b> ${producto.fechaPublicacion ? new Date(producto.fechaPublicacion).toLocaleDateString() : 'N/A'}
-                                </td>
-                                <td>$${producto.precioUnitario.toFixed(2)}</td>
-                            </tr>
-                        `;
-                    });
-
-                    tableFoot.innerHTML = `
+                    tableBody.innerHTML = data.listaProductos.map(p => `
                         <tr>
-                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
-                            <td><strong>$${data.total.toFixed(2)}</strong></td>
+                            <td><div class="book-title">${p.tituloLibro}</div></td>
+                            <td>
+                                <div class="book-meta">
+                                    <span>Author:</span> ${p.autorLibro || 'N/A'}<br>
+                                    <span>Published:</span> ${p.fechaPublicacion ? new Date(p.fechaPublicacion).toLocaleDateString() : 'N/A'}
+                                </div>
+                            </td>
+                            <td><span class="price-chip">$${p.precioUnitario.toFixed(2)}</span></td>
                         </tr>
-                    `;
-                } else {
-                    tableContent = '<tr><td colspan="3" class="text-center py-5">Your cart is empty.</td></tr>';
-                }
+                    `).join('');
 
-                tableBody.innerHTML = tableContent;
+                    totalEl.textContent = `$${data.total.toFixed(2)}`;
+                    footer.style.display = 'flex';
+                } else {
+                    tableBody.innerHTML = `
+                        <tr><td colspan="3">
+                            <div class="state-msg">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.78l1.2-8.61H6"/>
+                                </svg>
+                                Your cart is empty.
+                            </div>
+                        </td></tr>`;
+                }
             })
             .catch(error => {
                 console.error('Error fetching cart data:', error);
-                const tableBody = document.getElementById('cart-table-body');
-                tableBody.innerHTML = '<tr><td colspan="3" class="text-danger">Could not load cart data. Please ensure all services are running.</td></tr>';
+                document.getElementById('cart-table-body').innerHTML = `
+                    <tr><td colspan="3">
+                        <div class="state-msg">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                            </svg>
+                            Could not load cart data. Please ensure all services are active.
+                        </div>
+                    </td></tr>`;
             });
     });
 </script>
-
 </body>
 </html>

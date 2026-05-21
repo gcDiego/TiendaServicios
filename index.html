@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Shopping Cart</h1>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Details</th>
+            <th>Unit Price</th>
+        </tr>
+        </thead>
+        <tbody id="cart-table-body">
+        </tbody>
+        <tfoot id="cart-table-foot">
+        </tfoot>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        //Id de carrito correspondiente desde la base de datos
+        const carritoSesionId = 1;
+
+        fetch(`http://localhost:5250/api/CarritoCompras/${carritoSesionId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById('cart-table-body');
+                const tableFoot = document.getElementById('cart-table-foot');
+                let tableContent = '';
+
+                if (data.listaProductos && data.listaProductos.length > 0) {
+                    data.listaProductos.forEach(producto => {
+                        tableContent += `
+                                <tr>
+                                    <td>${producto.tituloLibro}</td>
+                                    <td>
+                                        <b>Author:</b> ${producto.autorLibro || 'N/A'}<br>
+                                        <b>Publication Date:</b> ${producto.fechaPublicacion ? new Date(producto.fechaPublicacion).toLocaleDateString() : 'N/A'}
+                                    </td>
+                                    <td>$${producto.precioUnitario.toFixed(2)}</td>
+                                </tr>
+                            `;
+                    });
+
+                    // Add the total row to the footer
+                    tableFoot.innerHTML = `
+                        <tr>
+                            <td colspan="2" class="text-right"><strong>Total:</strong></td>
+                            <td><strong>$${data.total.toFixed(2)}</strong></td>
+                        </tr>
+                    `;
+
+                } else {
+                    tableContent = '<tr><td colspan="3" class="text-center">No products found in this cart.</td></tr>';
+                }
+
+                tableBody.innerHTML = tableContent;
+            })
+            .catch(error => {
+                console.error('Error fetching cart data:', error);
+                const tableBody = document.getElementById('cart-table-body');
+                tableBody.innerHTML = '<tr><td colspan="3" class="text-danger">Error loading cart data. Make sure all backend services are running and CORS is configured correctly. Check the console for details.</td></tr>';
+            });
+    });
+</script>
+</body>
+</html>

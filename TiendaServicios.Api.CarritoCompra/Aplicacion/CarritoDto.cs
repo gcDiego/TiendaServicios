@@ -12,5 +12,7 @@ namespace TiendaServicios.Api.CarritoCompra.Aplicacion
         public DateTime? FechaCreacionSesion { get; set; }
 
         public List<CarritoDetalleDto> ListaProductos { get; set; }
+        
+        public double Total { get; set; }
     }
 }

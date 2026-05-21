@@ -14,5 +14,7 @@ namespace TiendaServicios.Api.CarritoCompra.Aplicacion
         public string AutorLibro { get; set; }
 
         public DateTime? FechaPublicacion { get; set; }
+        
+        public double PrecioUnitario { get; set; }
     }
 }

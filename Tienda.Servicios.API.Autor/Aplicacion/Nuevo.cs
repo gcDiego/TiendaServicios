@@ -42,10 +42,17 @@ namespace TiendaServicios.Api.Autor.Aplicacion
 
             public async Task Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // Convertir la fecha a UTC si tiene un valor, para satisfacer el requisito de PostgreSQL (timestamp with time zone)
+                DateTime? fechaNacimientoUtc = null;
+                if (request.FechaNacimiento.HasValue)
+                {
+                    fechaNacimientoUtc = DateTime.SpecifyKind(request.FechaNacimiento.Value, DateTimeKind.Utc);
+                }
+
                 var autorLibro = new AutorLibro 
                 {
                     Nombre = request.Nombre,
-                    FechaNacimiento = request.FechaNacimiento,
+                    FechaNacimiento = fechaNacimientoUtc,
                     Apellido = request.Apellido,
                     AutorLibroGuid = Convert.ToString(Guid.NewGuid())
                 };

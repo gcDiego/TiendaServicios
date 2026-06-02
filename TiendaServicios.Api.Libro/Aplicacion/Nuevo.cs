@@ -38,11 +38,17 @@ namespace TiendaServicios.Api.Libro.Aplicacion
             }
             public async Task<Unit> Handle(Ejecuta request, CancellationToken cancellationToken)
             {
+                // Convertir la fecha a UTC si tiene un valor, para asegurar compatibilidad con bases de datos
+                DateTime? fechaPublicacionUtc = null;
+                if (request.FechaPublicacion.HasValue)
+                {
+                    fechaPublicacionUtc = DateTime.SpecifyKind(request.FechaPublicacion.Value, DateTimeKind.Utc);
+                }
 
                 var libro = new LibreriaMaterial
                 {
                     Titulo = request.Titulo,
-                    FechaPublicacion = request.FechaPublicacion,
+                    FechaPublicacion = fechaPublicacionUtc,
                     AutorLibro = request.AutorLibro
                 };
 

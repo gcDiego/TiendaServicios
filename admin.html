@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Tienda Servicios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy:    #121669;
+            --violet:  #555fb2;
+            --lavender:#d5c6ed;
+            --white:   #ffffff;
+            --off-white: #f7f6fc;
+            --text-dark: #0d0f3f;
+            --text-mid: #3d3f6e;
+            --shadow: 0 8px 40px rgba(18,22,105,0.13);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            padding-top: 80px; /* Espacio para la barra de navegación fija */
+        }
+
+        /* --- Barra de Navegación --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            box-shadow: 0 2px 15px rgba(18,22,105,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            height: 65px;
+            z-index: 100;
+        }
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            text-decoration: none;
+        }
+        .nav-links a {
+            color: var(--text-mid);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 1.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--navy);
+        }
+        .nav-links a.active {
+            color: var(--navy);
+            border-bottom-color: var(--violet);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dashboard-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .forms-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+        .form-card h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--navy);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid var(--lavender);
+            border-radius: 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--violet);
+            box-shadow: 0 0 0 3px rgba(85, 95, 178, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            padding: 0.8rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+        }
+        .submit-btn:hover {
+            background: var(--violet);
+            transform: translateY(-1px);
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        .status-message.success { background-color: #e6f9f0; color: #0d6a3c; }
+        .status-message.error { background-color: #fdeeee; color: #d93030; }
+
+        @media (max-width: 768px) {
+            .forms-container { grid-template-columns: 1fr; }
+            .navbar { padding: 0 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="#" class="navbar-brand">TiendaServicios</a>
+    <div class="nav-links">
+        <a href="admin.html" class="active">Panel de Administración</a>
+        <a href="index.html">Carrito de Compras</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="dashboard-header">
+        <h1>Panel de Administración</h1>
+    </div>
+
+    <!-- Formulario para ver Carrito -->
+    <div class="form-card" style="margin-bottom: 2rem;">
+        <h2>Ver un Carrito de Compras</h2>
+        <form id="view-cart-form">
+            <div class="form-group">
+                <label for="cart-select">Selecciona un ID de Carrito</label>
+                <select id="cart-select" required>
+                    <option value="" disabled selected>Cargando carritos...</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Ver Carrito Seleccionado</button>
+        </form>
+    </div>
+
+    <div class="forms-container">
+        <!-- Formulario para agregar Autor -->
+        <div class="form-card">
+            <h2>Agregar Nuevo Autor</h2>
+            <form id="add-author-form">
+                <div class="form-group">
+                    <label for="author-nombre">Nombre</label>
+                    <input type="text" id="author-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="author-apellido">Apellido</label>
+                    <input type="text" id="author-apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="author-fecha">Fecha de Nacimiento</label>
+                    <input type="date" id="author-fecha">
+                </div>
+                <button type="submit" class="submit-btn">Agregar Autor</button>
+                <div id="author-status" class="status-message"></div>
+            </form>
+        </div>
+
+        <!-- Formulario para agregar Libro -->
+        <div class="form-card">
+            <h2>Agregar Nuevo Libro</h2>
+            <form id="add-book-form">
+                <div class="form-group">
+                    <label for="book-titulo">Título</label>
+                    <input type="text" id="book-titulo" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-fecha">Fecha de Publicación</label>
+                    <input type="date" id="book-fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="book-autor">Autor</label>
+                    <select id="book-autor" required>
+                        <option value="" disabled selected>Selecciona un autor...</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-btn">Agregar Libro</button>
+                <div id="book-status" class="status-message"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const authorForm = document.getElementById('add-author-form');
+        const bookForm = document.getElementById('add-book-form');
+        const viewCartForm = document.getElementById('view-cart-form');
+        const authorSelect = document.getElementById('book-autor');
+        const cartSelect = document.getElementById('cart-select');
+        const authorStatus = document.getElementById('author-status');
+        const bookStatus = document.getElementById('book-status');
+
+        // Función para mostrar mensajes de estado (éxito o error)
+        function showStatus(element, message, isSuccess) {
+            element.textContent = message;
+            element.className = 'status-message'; // Resetea las clases
+            element.classList.add(isSuccess ? 'success' : 'error');
+            element.style.display = 'block';
+            setTimeout(() => { element.style.display = 'none'; }, 5000); // Oculta el mensaje después de 5 segundos
+        }
+
+        // Función para obtener los autores y poblar el menú desplegable
+        function fetchAuthors() {
+            fetch('http://localhost:5248/api/Autor')
+                .then(response => {
+                    if (!response.ok) throw new Error('Falló la obtención de autores');
+                    return response.json();
+                })
+                .then(authors => {
+                    authorSelect.innerHTML = '<option value="" disabled selected>Selecciona un autor...</option>';
+                    authors.forEach(author => {
+                        const option = document.createElement('option');
+                        option.value = author.autorLibroGuid;
+                        option.textContent = `${author.nombre} ${author.apellido}`;
+                        authorSelect.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error al obtener autores:', err);
+                    authorSelect.innerHTML = '<option disabled selected>No se pudieron cargar los autores</option>';
+                });
+        }
+
+        // Función para obtener los carritos y poblar el menú desplegable
+        function fetchCarts() {
+            fetch('http://localhost:5250/api/CarritoCompras')
+                .then(response => {
+                    if (!response.ok) throw new Error('Falló la obtención de carritos');
+                    return response.json();
+                })
+                .then(carts => {
+                    cartSelect.innerHTML = '<option value="" disabled selected>Selecciona un carrito...</option>';
+                    carts.forEach(cart => {
+                        const option = document.createElement('option');
+                        option.value = cart.carritoId;
+                        option.textContent = `ID Carrito: ${cart.carritoId} (Creado: ${new Date(cart.fechaCreacionSesion).toLocaleDateString()})`;
+                        cartSelect.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error al obtener carritos:', err);
+                    cartSelect.innerHTML = '<option disabled selected>No se pudieron cargar los carritos</option>';
+                });
+        }
+
+        // Evento de envío del formulario para agregar autor
+        authorForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const authorData = {
+                nombre: document.getElementById('author-nombre').value,
+                apellido: document.getElementById('author-apellido').value,
+                fechaNacimiento: document.getElementById('author-fecha').value || null
+            };
+
+            fetch('http://localhost:5248/api/Autor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(authorData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
+                showStatus(authorStatus, '¡Autor agregado exitosamente!', true);
+                authorForm.reset();
+                fetchAuthors(); // Refresca la lista de autores en el otro formulario
+            })
+            .catch(err => {
+                showStatus(authorStatus, `Error: ${err.message}`, false);
+            });
+        });
+
+        // Evento de envío del formulario para agregar libro
+        bookForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const bookData = {
+                titulo: document.getElementById('book-titulo').value,
+                fechaPublicacion: document.getElementById('book-fecha').value,
+                autorLibro: document.getElementById('book-autor').value
+            };
+
+            fetch('http://localhost:5249/api/LibroMaterial', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bookData)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
+                showStatus(bookStatus, '¡Libro agregado exitosamente!', true);
+                bookForm.reset();
+            })
+            .catch(err => {
+                showStatus(bookStatus, `Error: ${err.message}`, false);
+            });
+        });
+
+        // Evento de envío del formulario para ver un carrito
+        viewCartForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedCartId = cartSelect.value;
+            if (selectedCartId) {
+                // Guarda el ID seleccionado en el almacenamiento local y redirige
+                localStorage.setItem('selectedCartId', selectedCartId);
+                window.location.href = 'index.html';
+            } else {
+                alert('Por favor, selecciona un carrito primero.');
+            }
+        });
+
+        // Carga inicial de datos
+        fetchAuthors();
+        fetchCarts();
+    });
+</script>
+</body>
+</html>

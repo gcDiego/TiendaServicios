@@ -31,6 +31,12 @@ namespace TiendaServicios.Api.Libro
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => {
+                options.AddPolicy("CorsRule", rule => {
+                    rule.AllowAnyHeader().AllowAnyMethod().WithOrigins("*");
+                });
+            });
+
             services.AddControllers();
             services.AddFluentValidationAutoValidation();
             services.AddFluentValidationClientsideAdapters();
@@ -50,6 +56,8 @@ namespace TiendaServicios.Api.Libro
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CorsRule");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

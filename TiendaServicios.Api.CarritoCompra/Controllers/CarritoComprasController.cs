@@ -19,9 +19,17 @@ namespace TiendaServicios.Api.CarritoCompra.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data)
+        public async Task<ActionResult> Crear(Nuevo.Ejecuta data)
         {
-            return await _mediator.Send(data);
+            await _mediator.Send(data);
+            return Ok();
+        }
+        
+        [HttpPost("agregar")]
+        public async Task<ActionResult> Agregar(Agregar.Ejecuta data)
+        {
+            await _mediator.Send(data);
+            return Ok();
         }
 
         [HttpGet]
@@ -35,5 +43,11 @@ namespace TiendaServicios.Api.CarritoCompra.Controllers
             return await _mediator.Send(new Consulta.Ejecuta { CarritoSesionId = id });
         }
 
+        [HttpDelete("{id}/productos/{productoId}")]
+        public async Task<ActionResult> EliminarItem(int id, string productoId)
+        {
+            await _mediator.Send(new Eliminar.Ejecuta { CarritoSesionId = id, ProductoSeleccionadoId = productoId });
+            return Ok();
+        }
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito de Compras - Tienda Servicios</title>
+    <title>Carrito de Compras - Tienda de Servicios</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,6 +14,7 @@
             --off-white: #f7f6fc;
             --text-dark: #0d0f3f;
             --text-mid: #3d3f6e;
+            --danger:  #d93030;
             --shadow: 0 8px 40px rgba(18,22,105,0.13);
         }
 
@@ -22,7 +23,7 @@
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--off-white);
-            padding-top: 80px; /* Espacio para la barra de navegación fija */
+            padding-top: 80px;
             position: relative;
             overflow-x: hidden;
             display: flex;
@@ -32,7 +33,6 @@
             padding-bottom: 4rem;
         }
         
-        /* --- Barra de Navegación --- */
         .navbar {
             position: fixed;
             top: 0;
@@ -47,13 +47,7 @@
             height: 65px;
             z-index: 100;
         }
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--navy);
-            text-decoration: none;
-        }
+        .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; color: var(--navy); text-decoration: none; }
         .nav-links a {
             color: var(--text-mid);
             text-decoration: none;
@@ -63,15 +57,9 @@
             border-bottom: 2px solid transparent;
             transition: color 0.2s, border-color 0.2s;
         }
-        .nav-links a:hover {
-            color: var(--navy);
-        }
-        .nav-links a.active {
-            color: var(--navy);
-            border-bottom-color: var(--violet);
-        }
+        .nav-links a:hover { color: var(--navy); }
+        .nav-links a.active { color: var(--navy); border-bottom-color: var(--violet); }
 
-        /* Blobs decorativos de fondo */
         body::before, body::after {
             content: '';
             position: fixed;
@@ -125,36 +113,14 @@
             flex-shrink: 0;
         }
         .header-icon svg { width: 28px; height: 28px; color: var(--navy); }
-        .header-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.75rem;
-            color: var(--white);
-            letter-spacing: 0.4px;
-            line-height: 1.2;
-            margin: 0;
-        }
-        .header-text p {
-            font-size: 0.82rem;
-            color: var(--lavender);
-            margin-top: 3px;
-            margin-bottom: 0;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
+        .header-text h1 { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: var(--white); letter-spacing: 0.4px; line-height: 1.2; margin: 0; }
+        .header-text p { font-size: 0.82rem; color: var(--lavender); margin-top: 3px; margin-bottom: 0; font-weight: 300; letter-spacing: 0.5px; }
 
         .cart-card { background: var(--white); box-shadow: var(--shadow); overflow: hidden; border-radius: 0 0 20px 20px; }
         .table-wrap { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         thead { background: var(--lavender); }
-        thead th {
-            padding: 1rem 1.4rem;
-            font-size: 0.72rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--navy);
-            text-align: left;
-        }
+        thead th { padding: 1rem 1.4rem; font-size: 0.72rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: var(--navy); text-align: left; }
         tbody tr { border-bottom: 1px solid #ede9f8; transition: background 0.18s; }
         tbody tr:last-child { border-bottom: none; }
         tbody tr:hover { background: #f3f0fb; }
@@ -165,6 +131,20 @@
         .book-meta span { font-weight: 500; }
 
         .price-chip { display: inline-block; background: var(--lavender); color: var(--navy); font-weight: 500; font-size: 0.95rem; padding: 0.35rem 0.9rem; border-radius: 999px; }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        .delete-btn svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-mid);
+            transition: color 0.2s;
+        }
+        .delete-btn:hover svg { color: var(--danger); }
 
         .cart-footer {
             background: var(--navy);
@@ -198,10 +178,11 @@
 <body>
 
 <nav class="navbar">
-    <a href="#" class="navbar-brand">TiendaServicios</a>
+    <a href="#" class="navbar-brand">TiendaDeServicios</a>
     <div class="nav-links">
-        <a href="admin.html">Panel de Administración</a>
-        <a href="index.html" class="active">Carrito de Compras</a>
+        <a href="customer.html">Tienda</a>
+        <a href="index.html" class="active">Mi Carrito</a>
+        <a href="admin.html">Admin</a>
     </div>
 </nav>
 
@@ -227,6 +208,7 @@
                         <th>Producto</th>
                         <th>Detalles</th>
                         <th>Precio Unitario</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="cart-table-body">
@@ -241,69 +223,112 @@
             <div class="label">Monto Total</div>
             <div class="amount" id="total-amount">$0.00</div>
         </div>
-        <button class="checkout-btn">Finalizar Compra &rarr;</button>
+        <button class="checkout-btn" id="checkout-btn">Finalizar Compra &rarr;</button>
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Obtiene el ID del carrito seleccionado desde el almacenamiento local, o usa '1' por defecto.
         const selectedCartId = localStorage.getItem('selectedCartId') || '1';
         document.getElementById('cart-title').textContent = `Carrito de Compras (ID: ${selectedCartId})`;
+        const tableBody = document.getElementById('cart-table-body');
 
-        fetch(`http://localhost:5250/api/CarritoCompras/${selectedCartId}`)
-            .then(response => {
-                if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
-                return response.json();
-            })
-            .then(data => {
-                const tableBody = document.getElementById('cart-table-body');
-                const footer    = document.getElementById('cart-footer');
-                const totalEl   = document.getElementById('total-amount');
-                const cartCard = document.querySelector('.cart-card');
+        function loadCart() {
+            fetch(`http://localhost:5250/api/CarritoCompras/${selectedCartId}`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`Error HTTP! estado: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    const footer = document.getElementById('cart-footer');
+                    const totalEl = document.getElementById('total-amount');
+                    const cartCard = document.querySelector('.cart-card');
 
-                if (data && data.listaProductos && data.listaProductos.length > 0) {
-                    tableBody.innerHTML = data.listaProductos.map(p => `
-                        <tr>
-                            <td><div class="book-title">${p.tituloLibro}</div></td>
-                            <td>
-                                <div class="book-meta">
-                                    <span>Autor:</span> ${p.autorLibro || 'N/A'}<br>
-                                    <span>Publicado:</span> ${p.fechaPublicacion ? new Date(p.fechaPublicacion).toLocaleDateString('es-ES') : 'N/A'}
+                    if (data && data.listaProductos && data.listaProductos.length > 0) {
+                        tableBody.innerHTML = data.listaProductos.map(p => `
+                            <tr data-product-id="${p.libroId}">
+                                <td><div class="book-title">${p.tituloLibro}</div></td>
+                                <td>
+                                    <div class="book-meta">
+                                        <span>Autor:</span> ${p.autorLibro || 'N/A'}<br>
+                                        <span>Publicado:</span> ${p.fechaPublicacion ? new Date(p.fechaPublicacion).toLocaleDateString('es-ES') : 'N/A'}
+                                    </div>
+                                </td>
+                                <td><span class="price-chip">$${p.precioUnitario.toFixed(2)}</span></td>
+                                <td>
+                                    <button class="delete-btn" title="Eliminar item">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        `).join('');
+
+                        totalEl.textContent = `$${data.total.toFixed(2)}`;
+                        footer.style.display = 'flex';
+                        cartCard.style.borderRadius = '0';
+                    } else {
+                        tableBody.innerHTML = `
+                            <tr><td colspan="4">
+                                <div class="state-msg">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.78l1.2-8.61H6"/>
+                                    </svg>
+                                    Este carrito está vacío o no existe.
                                 </div>
-                            </td>
-                            <td><span class="price-chip">$${p.precioUnitario.toFixed(2)}</span></td>
-                        </tr>
-                    `).join('');
-
-                    totalEl.textContent = `$${data.total.toFixed(2)}`;
-                    footer.style.display = 'flex';
-                    cartCard.style.borderRadius = '0'; // Fondo plano para que el pie de página se conecte bien
-                } else {
+                            </td></tr>`;
+                        footer.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener los datos del carrito:', error);
                     tableBody.innerHTML = `
-                        <tr><td colspan="3">
+                        <tr><td colspan="4">
                             <div class="state-msg">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                                    <path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.78l1.2-8.61H6"/>
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
                                 </svg>
-                                Este carrito está vacío o no existe.
+                                No se pudieron cargar los datos del carrito. Asegúrate de que todos los servicios estén activos.
                             </div>
                         </td></tr>`;
+                });
+        }
+
+        // Event listener para los botones de eliminar
+        tableBody.addEventListener('click', function(e) {
+            const deleteButton = e.target.closest('.delete-btn');
+            if (deleteButton) {
+                const row = deleteButton.closest('tr');
+                const productId = row.getAttribute('data-product-id');
+                
+                if (confirm(`¿Estás seguro de que quieres eliminar este producto del carrito?`)) {
+                    fetch(`http://localhost:5250/api/CarritoCompras/${selectedCartId}/productos/${productId}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error('No se pudo eliminar el producto.');
+                        // Vuelve a cargar el carrito para mostrar los cambios
+                        loadCart();
+                    })
+                    .catch(err => {
+                        console.error('Error al eliminar:', err);
+                        alert('Error al eliminar el producto.');
+                    });
                 }
-            })
-            .catch(error => {
-                console.error('Error al obtener los datos del carrito:', error);
-                document.getElementById('cart-table-body').innerHTML = `
-                    <tr><td colspan="3">
-                        <div class="state-msg">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                            </svg>
-                            No se pudieron cargar los datos del carrito. Asegúrate de que todos los servicios estén activos.
-                        </div>
-                    </td></tr>`;
-            });
+            }
+        });
+
+        // Event listener para el botón de finalizar compra
+        document.getElementById('checkout-btn').addEventListener('click', function() {
+            alert('¡Gracias por tu compra! Tu pedido ha sido procesado exitosamente.');
+        });
+
+        // Carga inicial del carrito
+        loadCart();
     });
 </script>
 </body>

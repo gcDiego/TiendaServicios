@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración - Tienda Servicios</title>
+    <title>Panel de Administración - Tienda de Servicios</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -160,30 +160,17 @@
 <body>
 
 <nav class="navbar">
-    <a href="#" class="navbar-brand">TiendaServicios</a>
+    <a href="#" class="navbar-brand">TiendaDeServicios</a>
     <div class="nav-links">
-        <a href="admin.html" class="active">Panel de Administración</a>
-        <a href="index.html">Carrito de Compras</a>
+        <a href="customer.html">Tienda</a>
+        <a href="index.html">Mi Carrito</a>
+        <a href="admin.html" class="active">Admin</a>
     </div>
 </nav>
 
 <div class="container">
     <div class="dashboard-header">
         <h1>Panel de Administración</h1>
-    </div>
-
-    <!-- Formulario para ver Carrito -->
-    <div class="form-card" style="margin-bottom: 2rem;">
-        <h2>Ver un Carrito de Compras</h2>
-        <form id="view-cart-form">
-            <div class="form-group">
-                <label for="cart-select">Selecciona un ID de Carrito</label>
-                <select id="cart-select" required>
-                    <option value="" disabled selected>Cargando carritos...</option>
-                </select>
-            </div>
-            <button type="submit" class="submit-btn">Ver Carrito Seleccionado</button>
-        </form>
     </div>
 
     <div class="forms-container">
@@ -237,28 +224,22 @@
     document.addEventListener('DOMContentLoaded', function() {
         const authorForm = document.getElementById('add-author-form');
         const bookForm = document.getElementById('add-book-form');
-        const viewCartForm = document.getElementById('view-cart-form');
         const authorSelect = document.getElementById('book-autor');
         const cartSelect = document.getElementById('cart-select');
         const authorStatus = document.getElementById('author-status');
         const bookStatus = document.getElementById('book-status');
 
-        // Función para mostrar mensajes de estado (éxito o error)
         function showStatus(element, message, isSuccess) {
             element.textContent = message;
-            element.className = 'status-message'; // Resetea las clases
+            element.className = 'status-message';
             element.classList.add(isSuccess ? 'success' : 'error');
             element.style.display = 'block';
-            setTimeout(() => { element.style.display = 'none'; }, 5000); // Oculta el mensaje después de 5 segundos
+            setTimeout(() => { element.style.display = 'none'; }, 5000);
         }
 
-        // Función para obtener los autores y poblar el menú desplegable
         function fetchAuthors() {
             fetch('http://localhost:5248/api/Autor')
-                .then(response => {
-                    if (!response.ok) throw new Error('Falló la obtención de autores');
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(authors => {
                     authorSelect.innerHTML = '<option value="" disabled selected>Selecciona un autor...</option>';
                     authors.forEach(author => {
@@ -274,29 +255,6 @@
                 });
         }
 
-        // Función para obtener los carritos y poblar el menú desplegable
-        function fetchCarts() {
-            fetch('http://localhost:5250/api/CarritoCompras')
-                .then(response => {
-                    if (!response.ok) throw new Error('Falló la obtención de carritos');
-                    return response.json();
-                })
-                .then(carts => {
-                    cartSelect.innerHTML = '<option value="" disabled selected>Selecciona un carrito...</option>';
-                    carts.forEach(cart => {
-                        const option = document.createElement('option');
-                        option.value = cart.carritoId;
-                        option.textContent = `ID Carrito: ${cart.carritoId} (Creado: ${new Date(cart.fechaCreacionSesion).toLocaleDateString()})`;
-                        cartSelect.appendChild(option);
-                    });
-                })
-                .catch(err => {
-                    console.error('Error al obtener carritos:', err);
-                    cartSelect.innerHTML = '<option disabled selected>No se pudieron cargar los carritos</option>';
-                });
-        }
-
-        // Evento de envío del formulario para agregar autor
         authorForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const authorData = {
@@ -304,24 +262,18 @@
                 apellido: document.getElementById('author-apellido').value,
                 fechaNacimiento: document.getElementById('author-fecha').value || null
             };
-
             fetch('http://localhost:5248/api/Autor', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(authorData)
-            })
-            .then(response => {
+            }).then(response => {
                 if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
                 showStatus(authorStatus, '¡Autor agregado exitosamente!', true);
                 authorForm.reset();
-                fetchAuthors(); // Refresca la lista de autores en el otro formulario
-            })
-            .catch(err => {
-                showStatus(authorStatus, `Error: ${err.message}`, false);
-            });
+                fetchAuthors();
+            }).catch(err => showStatus(authorStatus, `Error: ${err.message}`, false));
         });
 
-        // Evento de envío del formulario para agregar libro
         bookForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const bookData = {
@@ -329,38 +281,18 @@
                 fechaPublicacion: document.getElementById('book-fecha').value,
                 autorLibro: document.getElementById('book-autor').value
             };
-
             fetch('http://localhost:5249/api/LibroMaterial', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookData)
-            })
-            .then(response => {
+            }).then(response => {
                 if (!response.ok) throw new Error(`El servidor respondió con ${response.status}`);
                 showStatus(bookStatus, '¡Libro agregado exitosamente!', true);
                 bookForm.reset();
-            })
-            .catch(err => {
-                showStatus(bookStatus, `Error: ${err.message}`, false);
-            });
+            }).catch(err => showStatus(bookStatus, `Error: ${err.message}`, false));
         });
 
-        // Evento de envío del formulario para ver un carrito
-        viewCartForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const selectedCartId = cartSelect.value;
-            if (selectedCartId) {
-                // Guarda el ID seleccionado en el almacenamiento local y redirige
-                localStorage.setItem('selectedCartId', selectedCartId);
-                window.location.href = 'index.html';
-            } else {
-                alert('Por favor, selecciona un carrito primero.');
-            }
-        });
-
-        // Carga inicial de datos
         fetchAuthors();
-        fetchCarts();
     });
 </script>
 </body>

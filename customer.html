@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Libros - Vista de Cliente</title>
+    <title>Tienda - Vista de Cliente</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -40,131 +40,77 @@
             height: 65px;
             z-index: 100;
         }
-        .navbar-brand {
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--navy);
-            text-decoration: none;
-        }
-        .nav-links a {
-            color: var(--text-mid);
-            text-decoration: none;
-            font-weight: 500;
-            margin-left: 1.5rem;
-            padding: 0.5rem 0;
-            border-bottom: 2px solid transparent;
-            transition: color 0.2s, border-color 0.2s;
-        }
+        .navbar-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.5rem; color: var(--navy); text-decoration: none; }
+        .nav-links a { color: var(--text-mid); text-decoration: none; font-weight: 500; margin-left: 1.5rem; padding: 0.5rem 0; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
         .nav-links a:hover { color: var(--navy); }
         .nav-links a.active { color: var(--navy); border-bottom-color: var(--violet); }
 
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .page-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--navy);
-        }
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .page-header { text-align: center; margin-bottom: 2rem; }
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--navy); }
 
         /* --- Selección de Carrito --- */
         .cart-selector-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: var(--shadow);
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            background: var(--white); border-radius: 20px; box-shadow: var(--shadow);
+            padding: 1.5rem 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem;
         }
-        .cart-selector-card label {
-            font-weight: 500;
-            color: var(--navy);
-            margin-bottom: 0;
-            flex-shrink: 0;
-        }
+        .cart-selector-card label { font-weight: 500; color: var(--navy); margin-bottom: 0; flex-shrink: 0; }
         .cart-selector-card select {
-            flex-grow: 1;
-            padding: 0.7rem 1rem;
-            border: 1.5px solid var(--lavender);
-            border-radius: 10px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem;
+            flex-grow: 1; padding: 0.7rem 1rem; border: 1.5px solid var(--lavender);
+            border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
         }
         .view-cart-btn {
-            background: var(--violet);
-            color: var(--white);
-            border: none;
-            border-radius: 10px;
-            padding: 0.7rem 1.2rem;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: none;
-            display: none; /* Oculto por defecto */
-            transition: background 0.2s;
+            background: var(--violet); color: var(--white); border: none; border-radius: 10px;
+            padding: 0.7rem 1.2rem; font-weight: 500; cursor: pointer; text-decoration: none;
+            display: none; transition: background 0.2s;
         }
         .view-cart-btn:hover { background: var(--navy); }
 
-        /* --- Grid de Libros --- */
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
+        /* --- Tabs --- */
+        .tabs { display: flex; justify-content: center; margin-bottom: 2rem; gap: 1rem; }
+        .tab-btn {
+            background: transparent; border: 2px solid var(--violet); color: var(--violet);
+            padding: 0.8rem 2rem; border-radius: 30px; font-family: 'DM Sans', sans-serif;
+            font-weight: 600; cursor: pointer; transition: all 0.2s; font-size: 1rem;
         }
+        .tab-btn.active { background: var(--violet); color: var(--white); }
+        .tab-btn:hover:not(.active) { background: var(--lavender); }
+
+        /* --- Grid de Productos --- */
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
         .book-card {
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: var(--shadow);
+            background: var(--white); border-radius: 15px; box-shadow: var(--shadow);
+            overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .book-card:hover { transform: translateY(-5px); box-shadow: 0 12px 50px rgba(18,22,105,0.18); }
+        
+        .book-image-container {
+            height: 200px;
             overflow: hidden;
+            background-color: var(--lavender);
             display: flex;
-            flex-direction: column;
-            transition: transform 0.2s, box-shadow 0.2s;
+            align-items: center;
+            justify-content: center;
         }
-        .book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 50px rgba(18,22,105,0.18);
-        }
-        .book-card-content {
-            padding: 1.2rem;
-            flex-grow: 1;
-        }
-        .book-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--navy);
-            margin-bottom: 0.5rem;
-        }
-        .book-card p {
-            font-size: 0.85rem;
-            color: var(--text-mid);
-            margin-bottom: 0.2rem;
-        }
-        .book-card-footer {
-            padding: 1.2rem;
-            border-top: 1px solid var(--off-white);
-        }
-        .add-to-cart-btn {
+        .book-image-container img {
             width: 100%;
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            border-radius: 10px;
-            padding: 0.7rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
+            height: 100%;
+            object-fit: cover;
+        }
+        .no-image-text { color: var(--navy); font-weight: 500; opacity: 0.5; }
+
+        .book-card-content { padding: 1.2rem; flex-grow: 1; }
+        .book-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+        .book-card p { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 0.2rem; }
+        .book-card-footer { padding: 1.2rem; border-top: 1px solid var(--off-white); }
+        .add-to-cart-btn {
+            width: 100%; background: var(--navy); color: var(--white); border: none;
+            border-radius: 10px; padding: 0.7rem; font-weight: 500; cursor: pointer; transition: background 0.2s;
         }
         .add-to-cart-btn:hover { background: var(--violet); }
         .add-to-cart-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+        .loading-msg { text-align: center; color: var(--text-mid); font-size: 1.2rem; margin: 3rem 0; width: 100%; grid-column: 1 / -1; }
     </style>
 </head>
 <body>
@@ -180,7 +126,7 @@
 
 <div class="container">
     <div class="page-header">
-        <h1>Nuestros Libros</h1>
+        <h1>Nuestra Colección</h1>
     </div>
 
     <div class="cart-selector-card">
@@ -191,33 +137,42 @@
         <a href="#" id="view-cart-btn" class="view-cart-btn">Ver Mi Carrito</a>
     </div>
 
-    <div class="books-grid" id="books-grid">
-        <!-- Las tarjetas de libros se inyectarán aquí -->
+    <div class="tabs">
+        <button class="tab-btn active" id="tab-books">Libros</button>
+        <button class="tab-btn" id="tab-comics">Comics</button>
+    </div>
+
+    <div class="books-grid" id="products-grid">
+        <!-- Las tarjetas se inyectarán aquí -->
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const booksGrid = document.getElementById('books-grid');
+        const productsGrid = document.getElementById('products-grid');
         const cartSelect = document.getElementById('cart-select');
         const viewCartBtn = document.getElementById('view-cart-btn');
+        const tabBooks = document.getElementById('tab-books');
+        const tabComics = document.getElementById('tab-comics');
 
-        // Mapa para guardar los autores por su ID para una búsqueda rápida
+        let currentView = 'books'; // 'books' or 'comics'
         const authorMap = new Map();
+        
+        // Proxy URL for CORS if fetching directly from client side
+        // In a real app, you'd proxy this through your own backend API.
+        // For this demo, we'll hit ComicVine via a public CORS proxy.
+        const proxyUrl = 'https://api.allorigins.win/get?url=';
+        // Note: You should configure your API Key here for the frontend fetch
+        const comicVineApiKey = 'fe1d3b1388e0017c3042be2f9da89ba04c30e625';
 
-        // 1. Función para obtener los autores
         function fetchAuthors() {
             return fetch('http://localhost:5248/api/Autor')
                 .then(response => response.json())
                 .then(authors => {
-                    authors.forEach(author => {
-                        authorMap.set(author.autorLibroGuid, `${author.nombre} ${author.apellido}`);
-                    });
-                })
-                .catch(err => console.error('Error al obtener autores:', err));
+                    authors.forEach(author => authorMap.set(author.autorLibroGuid, `${author.nombre} ${author.apellido}`));
+                }).catch(err => console.error('Error al obtener autores:', err));
         }
 
-        // 2. Función para obtener los carritos
         function fetchCarts() {
             fetch('http://localhost:5250/api/CarritoCompras')
                 .then(response => response.json())
@@ -229,26 +184,32 @@
                         option.textContent = `Carrito ID: ${cart.carritoId}`;
                         cartSelect.appendChild(option);
                     });
-                })
-                .catch(err => console.error('Error al obtener carritos:', err));
+                }).catch(err => console.error('Error al obtener carritos:', err));
         }
 
-        // 3. Función para obtener los libros y mostrarlos (después de tener los autores)
-        function fetchBooks() {
+        function renderBooks() {
+            productsGrid.innerHTML = '<div class="loading-msg">Cargando libros...</div>';
             fetch('http://localhost:5249/api/LibroMaterial')
                 .then(response => response.json())
                 .then(books => {
-                    booksGrid.innerHTML = books.map(book => {
+                    if (books.length === 0) {
+                        productsGrid.innerHTML = '<div class="loading-msg">No hay libros disponibles.</div>';
+                        return;
+                    }
+                    productsGrid.innerHTML = books.map(book => {
                         const authorName = authorMap.get(book.autorLibro) || 'Autor Desconocido';
                         return `
                             <div class="book-card">
+                                <div class="book-image-container">
+                                    <span class="no-image-text">LIBRO</span>
+                                </div>
                                 <div class="book-card-content">
                                     <h3>${book.titulo}</h3>
                                     <p><strong>Autor:</strong> ${authorName}</p>
-                                    <p><strong>Publicado:</strong> ${new Date(book.fechaPublicacion).toLocaleDateString('es-ES')}</p>
+                                    <p><strong>Publicado:</strong> ${book.fechaPublicacion ? new Date(book.fechaPublicacion).toLocaleDateString('es-ES') : 'N/A'}</p>
                                 </div>
                                 <div class="book-card-footer">
-                                    <button class="add-to-cart-btn" data-book-id="${book.libreriaMaterialId}">Añadir al Carrito</button>
+                                    <button class="add-to-cart-btn" data-product-id="${book.libreriaMaterialId}">Añadir Libro al Carrito</button>
                                 </div>
                             </div>
                         `;
@@ -256,20 +217,76 @@
                 })
                 .catch(err => {
                     console.error('Error al obtener libros:', err);
-                    booksGrid.innerHTML = '<p>No se pudieron cargar los libros.</p>';
+                    productsGrid.innerHTML = '<div class="loading-msg" style="color:var(--danger)">Error cargando libros.</div>';
                 });
         }
 
-        // Event listener para el cambio en el selector de carrito
-        cartSelect.addEventListener('change', function() {
-            if (cartSelect.value) {
-                viewCartBtn.style.display = 'inline-block';
-            } else {
-                viewCartBtn.style.display = 'none';
+        function renderComics() {
+            productsGrid.innerHTML = '<div class="loading-msg">Cargando cómics populares desde Comic Vine...</div>';
+            
+            // Using a CORS proxy to bypass browser restrictions when calling external APIs directly
+            const targetUrl = encodeURIComponent(`https://comicvine.gamespot.com/api/volumes/?api_key=${comicVineApiKey}&format=json&limit=12&sort=date_added:desc`);
+            
+            fetch(proxyUrl + targetUrl)
+                .then(response => response.json())
+                .then(proxyData => JSON.parse(proxyData.contents))
+                .then(data => {
+                    if (!data.results || data.results.length === 0) {
+                        productsGrid.innerHTML = '<div class="loading-msg">No se encontraron cómics.</div>';
+                        return;
+                    }
+                    
+                    productsGrid.innerHTML = data.results.map(comic => {
+                        const imageUrl = comic.image ? comic.image.medium_url || comic.image.original_url : '';
+                        const imgHtml = imageUrl ? `<img src="${imageUrl}" alt="${comic.name}">` : '<span class="no-image-text">CÓMIC</span>';
+                        
+                        return `
+                            <div class="book-card">
+                                <div class="book-image-container">
+                                    ${imgHtml}
+                                </div>
+                                <div class="book-card-content">
+                                    <h3>${comic.name || 'Volumen Desconocido'}</h3>
+                                    <p><strong>Editorial:</strong> ${comic.publisher ? comic.publisher.name : 'N/A'}</p>
+                                    <p><strong>Año:</strong> ${comic.start_year || 'N/A'}</p>
+                                </div>
+                                <div class="book-card-footer">
+                                    <button class="add-to-cart-btn" data-product-id="comic-${comic.id}">Añadir Cómic al Carrito</button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                })
+                .catch(err => {
+                    console.error('Error al obtener cómics:', err);
+                    productsGrid.innerHTML = '<div class="loading-msg" style="color:var(--danger)">Error cargando cómics. Verifica la conexión a internet.</div>';
+                });
+        }
+
+        // Tab Switching
+        tabBooks.addEventListener('click', () => {
+            if(currentView !== 'books') {
+                currentView = 'books';
+                tabBooks.classList.add('active');
+                tabComics.classList.remove('active');
+                renderBooks();
             }
         });
 
-        // Event listener para el botón "Ver Mi Carrito"
+        tabComics.addEventListener('click', () => {
+            if(currentView !== 'comics') {
+                currentView = 'comics';
+                tabComics.classList.add('active');
+                tabBooks.classList.remove('active');
+                renderComics();
+            }
+        });
+
+        cartSelect.addEventListener('change', function() {
+            if (cartSelect.value) viewCartBtn.style.display = 'inline-block';
+            else viewCartBtn.style.display = 'none';
+        });
+
         viewCartBtn.addEventListener('click', function(e) {
             e.preventDefault();
             const selectedCartId = cartSelect.value;
@@ -279,11 +296,10 @@
             }
         });
 
-        // Event listener para los botones "Añadir al Carrito"
-        booksGrid.addEventListener('click', function(e) {
+        productsGrid.addEventListener('click', function(e) {
             if (e.target.classList.contains('add-to-cart-btn')) {
                 const selectedCartId = cartSelect.value;
-                const bookId = e.target.getAttribute('data-book-id');
+                const productId = e.target.getAttribute('data-product-id');
 
                 if (!selectedCartId) {
                     alert('Por favor, selecciona un carrito primero.');
@@ -292,9 +308,10 @@
 
                 const data = {
                     carritoSesionId: parseInt(selectedCartId),
-                    productoSeleccionado: bookId
+                    productoSeleccionado: productId
                 };
 
+                const originalText = e.target.textContent;
                 e.target.textContent = 'Añadiendo...';
                 e.target.disabled = true;
 
@@ -308,7 +325,7 @@
                     e.target.textContent = '¡Añadido!';
                     e.target.style.backgroundColor = '#28a745';
                     setTimeout(() => {
-                        e.target.textContent = 'Añadir al Carrito';
+                        e.target.textContent = originalText;
                         e.target.disabled = false;
                         e.target.style.backgroundColor = '';
                     }, 2000);
@@ -318,7 +335,7 @@
                     e.target.textContent = 'Error';
                     e.target.style.backgroundColor = '#dc3545';
                     setTimeout(() => {
-                        e.target.textContent = 'Añadir al Carrito';
+                        e.target.textContent = originalText;
                         e.target.disabled = false;
                         e.target.style.backgroundColor = '';
                     }, 2000);
@@ -326,11 +343,11 @@
             }
         });
 
-        // Carga inicial de datos en secuencia: primero autores, luego libros y carritos
+        // Initialize
         async function initialize() {
-            await fetchAuthors(); // Espera a que los autores estén listos
-            fetchBooks();         // Ahora obtén los libros
-            fetchCarts();         // Obtén los carritos en paralelo
+            await fetchAuthors();
+            fetchCarts();
+            renderBooks(); // Default view
         }
 
         initialize();

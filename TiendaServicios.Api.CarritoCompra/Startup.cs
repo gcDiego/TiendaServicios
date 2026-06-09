@@ -38,6 +38,7 @@ namespace TiendaServicios.Api.CarritoCompra
 
             services.AddScoped<ILibrosService, LibrosService>();
             services.AddScoped<IAutorService, AutorService>();
+            services.AddScoped<IComicVineService, ComicVineService>();
             services.AddControllers();
             
             services.AddDbContext<CarritoContexto>(options =>
@@ -64,6 +65,13 @@ namespace TiendaServicios.Api.CarritoCompra
                 }
             });
 
+            services.AddHttpClient("ComicVine", config =>
+            {
+                var url = Configuration["ComicVine:BaseUrl"];
+                if(!string.IsNullOrEmpty(url)) {
+                   config.BaseAddress = new Uri(url);
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

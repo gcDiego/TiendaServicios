@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TiendaServicios.Api.CarritoCompra.Aplicacion
 {
     public class CarritoDetalleDto
     {
-        public Guid? LibroId { get; set; }
-
-        public string TituloLibro { get; set; }
-
-        public string AutorLibro { get; set; }
-
+        public string ProductoId { get; set; }
+        public string TituloProducto { get; set; }
+        public string AutorProducto { get; set; }
         public DateTime? FechaPublicacion { get; set; }
-        
         public double PrecioUnitario { get; set; }
+        public string TipoProducto { get; set; } // "Libro" o "Comic"
+        public string ImagenUrl { get; set; } // Para la imagen del comic
     }
 }

@@ -1,6 +1,5 @@
 <Solution>
   <Project Path="Tienda.Servicios.API.Autor/Tienda.Servicios.API.Autor.csproj" />
   <Project Path="TiendaServicios.Api.CarritoCompra\TiendaServicios.Api.CarritoCompra.csproj" Type="Classic C#" />
-  <Project Path="TiendaServicios.Api.Comic\TiendaServicios.Api.Comic.csproj" Type="Classic C#" />
   <Project Path="TiendaServicios.Api.Libro\TiendaServicios.Api.Libro.csproj" Type="Classic C#" />
 </Solution>
